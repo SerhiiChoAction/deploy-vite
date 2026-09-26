@@ -1,4 +1,4 @@
-# Secure Copy Files with SSH
+# Deploy Vite App
 
 Forgejo composite action to build and rsync your Vite project to a destination server.
 
@@ -8,11 +8,12 @@ Here are the packages that needs to be installed on runner:
 
 - bash
 - rsync
+- npm
 
 ## Usage Example
 
 ```yml
-name: Deploy
+name: Deploy Vite App
 enable-email-notifications: true
 
 on:
@@ -22,7 +23,7 @@ on:
 jobs:
   deploy:
     name: Deploy Vite App
-    runs-on: debian13-podman
+    runs-on: <your-runner-with-required-packages>
 
     steps:
       - name: Install deps
