@@ -1,0 +1,74 @@
+name: SCP Files
+description: Forgejo composite action to secure-copy files using scp
+inputs:
+  host-user:
+    required: true
+    description: >
+      Required. Destination server username. <username>@<ip> or just <username> if
+      you have SSH alias in ~/.ssh/config file.
+
+  host-key:
+    required: true
+    description: The private SSH key for authorization
+
+  from:
+    required: true
+    description: >
+      Which files or directory should be transfered. To tranfer contents of directory
+      use trailing slash like build/. To transfer the direcoty, just omit trailing slash.
+      Example: dist/
+
+  to:
+    required: true
+    description: >
+      The destination path on your server relative to the SSH user you provide. This is
+      a directory where final build files are going to be moved.
+      Example: ~/my-project-dir
+
+  host-ip:
+    required: false
+    description: >
+      Optional. Destination server host IP address or domain. Example: 233.24.52.14.
+      If host-ip is not used, only the username will be used for SSH.
+
+  to-pages-branch:
+    required: false
+    default: false
+    description: >
+      Optional. Additionally, deploy final build files to 'pages' branch.
+      Useful if you use Codeberg pages.
+
+runs:
+  using: composite
+  steps:
+    - name: Install and Build 🔧
+      run: |
+        npm ci
+        npm run build
+
+    - name: Create SSH key 🔑
+      uses: https://codeberg.org/act/ssh-auth@v1
+      with:
+        host-user: ${{ inputs.host-user }}
+        host-ip: ${{ inputs.host-ip }}
+        host-key: ${{ inputs.host-key }}
+
+    - name: Deploy 🚀
+      run: |
+        host="${{ inputs.host-user }}"
+
+        if [[ "${{ inputs.host-ip }}" != "" ]]; then
+          host="${{ inputs.host-user }}@${{ inputs.host-ip }}"
+        fi
+
+        dest="${{ inputs.to }}"
+
+        ssh $host "mkdir -p $dest"
+        rsync -avz --delete ${{ inputs.from }} $host:$dest
+
+    - name: Deploy to pages branch 🪾
+      uses: https://github.com/JamesIves/github-pages-deploy-action@v4
+      if: ${{ inputs.to-pages-branch == 'true' }}
+      with:
+        folder: docs/.vitepress/dist
+        branch: pages
