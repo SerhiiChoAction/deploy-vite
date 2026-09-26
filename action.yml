@@ -43,7 +43,10 @@ runs:
   steps:
     - name: Install and Build 🔧
       run: |
+        echo "⌛ Running npm ci..."
         npm ci
+
+        echo "⌛ Running npm run build..."
         npm run build
 
     - name: Create SSH key 🔑
