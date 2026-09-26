@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Deploy Vite App
-        uses: https://codeberg.org/act/vite-deploy@v1
+        uses: https://codeberg.org/act/deploy-vite@v1
         with:
           host-user: ${{ secrets.HOST_USER }}
           host-ip: ${{ secrets.HOST_IP }}
