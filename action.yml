@@ -55,6 +55,8 @@ runs:
 
     - name: Deploy 🚀
       run: |
+        echo "⌛ Deploying files..."
+
         host="${{ inputs.host-user }}"
 
         if [[ "${{ inputs.host-ip }}" != "" ]]; then
@@ -65,6 +67,8 @@ runs:
 
         ssh $host "mkdir -p $dest"
         rsync -avz --delete ${{ inputs.from }} $host:$dest
+
+        echo "✅ Files are deployed!"
 
     - name: Deploy to pages branch 🪾
       uses: https://github.com/JamesIves/github-pages-deploy-action@v4
