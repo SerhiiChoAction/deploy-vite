@@ -51,7 +51,6 @@ runs:
         npm run build
 
     - name: Create SSH key 🔑
-      shell: bash
       uses: SerhiiChoAction/ssh-auth@v1
       with:
         host-user: ${{ inputs.host-user }}
@@ -77,7 +76,6 @@ runs:
         echo "✅ Files are deployed!"
 
     - name: Deploy to pages branch 🪾
-      shell: bash
       uses: JamesIves/github-pages-deploy-action@v4
       if: ${{ inputs.pages-branch != '' }}
       with:
