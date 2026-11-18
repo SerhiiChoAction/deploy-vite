@@ -39,5 +39,5 @@ jobs:
           host-key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
           from: dist/
           to: ~/my-project
-          pages-branch: my-project.github.io
+          to-pages-branch: true
 ```
