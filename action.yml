@@ -77,7 +77,7 @@ runs:
 
     - name: Deploy to pages branch 🪾
       uses: JamesIves/github-pages-deploy-action@v4
-      if: inputs.to-pages-branch == "true"
+      if: inputs.to-pages-branch == 'true'
       with:
         folder: ${{ inputs.from }}
         branch: gh-pages
