@@ -1,5 +1,5 @@
 name: SCP Files
-description: Forgejo composite action to secure-copy files using scp
+description: Composite action to secure-copy files using scp
 inputs:
   host-user:
     required: true
@@ -31,12 +31,12 @@ inputs:
       Optional. Destination server host IP address or domain. Example: 233.24.52.14.
       If host-ip is not used, only the username will be used for SSH.
 
-  to-pages-branch:
+  pages-branch:
     required: false
-    default: false
+    default: ""
     description: >
-      Optional. Additionally, deploy final build files to 'pages' branch.
-      Useful if you use Codeberg pages.
+      Optional. Additionally, deploy final build files to GitHub pages branch.
+      Example: "my-project.github.io"
 
 runs:
   using: composite
@@ -50,7 +50,7 @@ runs:
         npm run build
 
     - name: Create SSH key 🔑
-      uses: https://codeberg.org/act/ssh-auth@v1
+      uses: SerhiiChoAction/ssh-auth@v1
       with:
         host-user: ${{ inputs.host-user }}
         host-ip: ${{ inputs.host-ip }}
@@ -74,8 +74,8 @@ runs:
         echo "✅ Files are deployed!"
 
     - name: Deploy to pages branch 🪾
-      uses: https://github.com/JamesIves/github-pages-deploy-action@v4
-      if: ${{ inputs.to-pages-branch == 'true' }}
+      uses: JamesIves/github-pages-deploy-action@v4
+      if: ${{ inputs.pages-branch != '' }}
       with:
         folder: ${{ inputs.from }}
-        branch: pages
+        branch: ${{ inputs.pages-branch }}

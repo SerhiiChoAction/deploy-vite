@@ -1,6 +1,6 @@
 # Deploy Vite App
 
-Forgejo composite action to build and rsync your Vite project to a destination server.
+Composite action to build and rsync your Vite project to a destination server.
 
 ## Runner Requirements
 
@@ -23,7 +23,7 @@ on:
 jobs:
   deploy:
     name: Deploy Vite App
-    runs-on: <your-runner-with-required-packages>
+    runs-on: ubuntu-latest
 
     steps:
       - name: Install deps
@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Deploy Vite App
-        uses: https://codeberg.org/act/deploy-vite@v1
+        uses: SerhiiChoAction/deploy-vite@v1
         with:
           host-user: ${{ secrets.HOST_USER }}
           host-ip: ${{ secrets.HOST_IP }}
